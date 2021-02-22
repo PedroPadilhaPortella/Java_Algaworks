@@ -1,0 +1,46 @@
+.navbar-brand{
+	padding: 15px;
+}
+
+.newButton{
+	float:right;
+}
+
+.new-header{
+	float: left;
+}
+
+.card{
+	margin-left: 25px;
+	margin-right: 25px;
+	margin-top: 25px;
+	
+}
+
+.alert-success{
+	margin-left: 25px;
+	margin-right: 25px;
+	margin-top: 25px;
+}
+
+.gft-link-card{
+	margin-top: 3px;
+}
+
+.alert-danger{
+	margin-left: 25px;
+	margin-right: 25px;
+	margin-top: 25px;
+}
+
+.status{
+	margin-top: 11px;
+}
+
+.alinhapesq{
+	margin-left: -15px;
+}
+
+.alinhasalvar{
+	margin-left: -10px;
+}
