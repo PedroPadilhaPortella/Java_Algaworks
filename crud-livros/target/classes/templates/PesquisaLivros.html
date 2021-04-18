@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{LayoutPadrao}">
+<head>
+<title>Biblioteca do Portella</title>
+</head>
+
+<section layout:fragment="conteudo">
+	<div th:replace="MensagemGeral"></div>
+	<div class="card">
+	<div class="card-header">
+				<div class="clearfix">
+					<h2 class="new-header">Pesquisa de Livros</h2>	
+					<a class="btn btn-primary newButton gft-link-card" href="livros/novo">Novo Livro</a>	
+				</div>
+			</div>
+			<div class="card-body card-bordered table-striped">
+				<form method="GET" class="form-horizontal" action="/livros" th:object="${filtro}">
+					<div class="form-group alinhapesq">
+						<div class="col-sm-4">
+							<div class="input-group">
+								<input class="form-control" placeholder="Qual livro você está procurando?" autofocus="autofocus" th:field="*{titulo}"></input>
+								<span class="input-group-btn">
+									<button type="submit" class="btn btn-default">
+										<i class="fas fa-search"></i>
+									</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</form>
+					<table class="table table-bordered">
+					  <thead>
+					    <tr>
+					      <th class="text-center" scope="col">#</th>
+					      <th scope="col">Título</th>
+					      <th class="text-center" scope="col">Autor</th>
+					      <th class="text-right" scope="col">Editora</th>
+					      <th class="text-center" scope="col">Total de Páginas</th>
+					      <th class="text-center" scope="col">Quantidade Total de Exemplares</th>
+					      <th scope="col"></th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					  	<tr th:each="livro : ${livros}">
+					  		<td class="text-center" th:text="${livro.id}">1</td>
+					  		<td th:text="${livro.titulo}"></td>
+					  		<td class="text-center" th:text="${{livro.autor}}"></td>
+					  		<td class="text-right" th:text="${{livro.editora}}"></td>
+					  		<td class="text-right" th:text="|${{livro.quantidadePaginas}} páginas|"></td>
+					  		<td class="text-right" th:text="|${{livro.quantidadeExemplares}} exemplares|"></td>
+					  		<td class="text-center">
+					  			<a class="btn btn-link btn-xs" th:href="@{/livros/{id}(id=${livro.id})}" title="Editar" rel="tooltipo" data-placement="top">
+					  				<i class="fas fa-pen"></i>
+					  			</a>
+					  			<a class="btn btn-link btn-xs" data-toggle="modal" data-target="#confirmacaoExclusaoModal"
+					  				th:attr="data-codigo=${livro.id}, data-descricao=${livro.titulo}"
+					  				title="Excluir" rel="tooltipo" data-placement="top">
+					  				<i class="fas fa-trash-alt"></i>
+					  			</a>
+					  		</td>
+					  	</tr>
+					    <tr>
+					      <td class="text-center" colspan="6" th:if="${#lists.isEmpty(livros)}">Nenhum livro foi encontrado</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div th:replace="DialogoConfirmacaoExclusao"></div>
+		</div>
+</section>
+</html>
