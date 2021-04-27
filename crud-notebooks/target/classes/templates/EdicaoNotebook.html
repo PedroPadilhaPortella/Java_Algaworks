@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{LayoutPadrao}">
+<head>
+<title>Novo Notebook</title>
+</head>
+
+<section layout:fragment="conteudo">	
+
+	<form class="form-horizontal" method="POST" action="novo" th:object="${notebook}" >
+		 
+		<div class="container text-center">
+			<div class="card-header">
+				<div class="clearfix">
+					<h2 class="new-header">Novo notebook</h2>
+					<a class="btn btn-primary newButton gft-link-card" href="/notebooks">Voltar para Lista</a>
+				</div>
+			</div>
+			<div class="card-body card-bordered">
+			
+				<input type="hidden" th:field="*{id}"/>
+				
+				<div class="form-group row ">
+					<label for="nome" class="col-sm-2 col-form-label">Nome</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="nome" th:field="*{nome}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row ">
+					<label for="marca" class="col-sm-2 col-form-label">Marca</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="marca" th:field="*{marca}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row ">
+					<label for="processador" class="col-sm-2 col-form-label">Processador</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="processador" th:field="*{processador}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row ">
+					<label for="memoria" class="col-sm-2 col-form-label">Memória</label>
+					<div class="col-sm-4">
+						<input type="number" class="form-control" id="memoria" th:field="*{memoria}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row ">
+					<label for="ram" class="col-sm-2 col-form-label">Memória RAM</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="ram" th:field="*{ram}"/>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label for="preco" class="col-sm-2 col-form-label">Preco</label>
+					<div class="col-sm-2 ">
+						<input type="number" class="form-control" id="preco" th:field="*{preco}" />
+					</div>
+				</div>
+
+				<div class="offset-sm-2">
+					<div class="col-sm-3 ">
+						<button type="submit" class="btn btn-success col-sm-4 alinhasalvar ">Salvar</button>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	
+	</form>
+</section>
+</html>

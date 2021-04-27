@@ -21,34 +21,35 @@ import com.gft.mvc.service.LivrosService;
 @RequestMapping("/livros")
 public class LivroController {
 
-	private static final String CADASTRO_VIEW = "CadastroLivro";
+	//private static final String CADASTRO_VIEW = "CadastroLivro";
 
 	@Autowired
 	private LivrosService livroService;
 	
+	
+	//POST
 	@RequestMapping("/novo")
 	public ModelAndView novo() {
-		ModelAndView mv = new ModelAndView(CADASTRO_VIEW);
+		ModelAndView mv = new ModelAndView("CadastroLivro");
 		mv.addObject(new Livro());
 		return mv;
 	}
 
+	
+	//POST
 	@RequestMapping(value = "/novo", method = RequestMethod.POST)
 	public String salvar(@Validated Livro livro, Errors errors, RedirectAttributes attributes) {
 		if (errors.hasErrors()) {
-			return CADASTRO_VIEW;
+			return "CadastroLivro";
 		}
 		
-		try {
-			livroService.salvar(livro);
-			attributes.addFlashAttribute("mensagem", "Livro salvo com sucesso!");
-			return "redirect:/livros/novo";
-		} catch (IllegalArgumentException e) {
-			errors.rejectValue("dataVencimento", null, e.getMessage());
-			return CADASTRO_VIEW;
-		}
+		livroService.salvar(livro);
+		attributes.addFlashAttribute("mensagem", "Livro salvo com sucesso!");
+		return "redirect:/livros";
 	}
 
+	
+	//GET
 	@RequestMapping
 	public ModelAndView pesquisar(@ModelAttribute("filtro")LivroFilter filtro) {
 		List<Livro> todosLivros = livroService.filtrar(filtro);
@@ -57,13 +58,17 @@ public class LivroController {
 		return mv;
 	}
 
+	
+	//PUT
 	@RequestMapping("{id}")
 	public ModelAndView edicao(@PathVariable("id") Livro livro) {
-		ModelAndView mv = new ModelAndView(CADASTRO_VIEW);
+		ModelAndView mv = new ModelAndView("EdicaoLivro");
 		mv.addObject(livro);
 		return mv;
 	}
+	
 
+	//DELETE
 	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
 	public String excluir(@PathVariable Long id, RedirectAttributes attributes) {
 		livroService.excluir(id);
