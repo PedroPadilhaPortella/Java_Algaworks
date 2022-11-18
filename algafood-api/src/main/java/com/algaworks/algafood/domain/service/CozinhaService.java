@@ -17,13 +17,13 @@ public class CozinhaService {
 	private CozinhaRepository cozinhaRepository;
 
 	public Cozinha salvar(Cozinha cozinha) {
-		return cozinhaRepository.salvar(cozinha);
+		return cozinhaRepository.save(cozinha);
 	}
 	
 	
 	public void remover(Long id) {
 		try {
-			cozinhaRepository.remover(id);
+			cozinhaRepository.deleteById(id);
 			
 		} catch(DataIntegrityViolationException exception) {
 			throw new EntidadeEmUsoException(
@@ -34,5 +34,4 @@ public class CozinhaService {
 			throw new EntidadeNaoEncontradaException(String.format("Cozinha de id %d não encontrada", id));
 		}
 	}
-	
 }

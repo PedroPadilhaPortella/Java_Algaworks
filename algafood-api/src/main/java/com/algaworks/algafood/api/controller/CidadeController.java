@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -34,18 +35,18 @@ public class CidadeController {
 	
 	@GetMapping
 	public List<Cidade> listar() {
-		return cidadeRepository.listar();
+		return cidadeRepository.findAll();
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Cidade> buscar(@PathVariable Long id) {
-		Cidade cidade = cidadeRepository.buscar(id);
+		Optional<Cidade> cidade = cidadeRepository.findById(id);
 		
-		if (cidade == null) {
+		if (cidade.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.ok(cidade);
+		return ResponseEntity.ok(cidade.get());
 	}
 	
 	@PostMapping
@@ -61,18 +62,17 @@ public class CidadeController {
 	@PutMapping("/{id}")
 	public ResponseEntity<?> atualizar(@PathVariable Long id, @Valid @RequestBody Cidade cidade) {
 		try {
-			Cidade cidadeDb = cidadeRepository.buscar(id);
-			
-			if (cidadeDb == null) {
+			Optional<Cidade> cidadeDb = cidadeRepository.findById(id);
+		
+			if (cidadeDb.isEmpty()) {
 				return ResponseEntity.notFound().build();
 			}
 			
-			cidade = cidadeService.atualizar(cidade, cidadeDb);
-			return ResponseEntity.ok(cidadeDb);
+			cidade = cidadeService.atualizar(cidade, cidadeDb.get());
+			return ResponseEntity.ok(cidadeDb.get());
 		
 		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest()
-					.body(e.getMessage());
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 	

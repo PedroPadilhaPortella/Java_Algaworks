@@ -24,35 +24,33 @@ public class RestauranteService {
 
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
-		Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
 		
-		if(cozinha == null) {
-			throw new EntidadeNaoEncontradaException(String.format("Cozinha de id %d não encontrada", cozinhaId));
-		}
+		Cozinha cozinha = cozinhaRepository.findById(cozinhaId).orElseThrow(() -> 
+			new EntidadeNaoEncontradaException(String.format("Cozinha de id %d não encontrada", cozinhaId))
+		);
 		
 		restaurante.setCozinha(cozinha);
 		
-		return restauranteRepository.salvar(restaurante);
+		return restauranteRepository.save(restaurante);
 	}
 	
 
 	public Restaurante atualizar(Restaurante restaurante, Restaurante restauranteDb) {
 		Long cozinhaId = restaurante.getCozinha().getId();
-		Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
 		
-		if(cozinha == null) {
-			throw new EntidadeNaoEncontradaException(String.format("Cozinha de id %d não encontrada", cozinhaId));
-		}
+		Cozinha cozinha = cozinhaRepository.findById(cozinhaId).orElseThrow(() -> 
+			new EntidadeNaoEncontradaException(String.format("Cozinha de id %d não encontrada", cozinhaId))
+		);
 		
 		restaurante.setCozinha(cozinha);
 		BeanUtils.copyProperties(restaurante, restauranteDb, "id");
 		
-		return restauranteRepository.salvar(restauranteDb);
+		return restauranteRepository.save(restauranteDb);
 	}
 	
 	public void excluir(Long id) {
 		try {
-			restauranteRepository.remover(id);
+			restauranteRepository.deleteById(id);
 			
 		} catch(DataIntegrityViolationException exception) {
 			throw new EntidadeEmUsoException(

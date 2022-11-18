@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -36,18 +37,18 @@ public class EstadoController {
 	
 	@GetMapping
 	public List<Estado> listar() {
-		return estadoRepository.listar();
+		return estadoRepository.findAll();
 	}
 	
-	@GetMapping("/{estadoId}")
-	public ResponseEntity<Estado> buscar(@PathVariable Long estadoId) {
-		Estado estado = estadoRepository.buscar(estadoId);
+	@GetMapping("/{id}")
+	public ResponseEntity<Estado> buscar(@PathVariable Long id) {
+		Optional<Estado> estado = estadoRepository.findById(id);
 		
-		if (estado == null) {
+		if(estado.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.ok(estado);
+		return ResponseEntity.ok(estado.get());
 	}
 	
 	@PostMapping
@@ -56,17 +57,17 @@ public class EstadoController {
 		return estadoService.salvar(estado);
 	}
 	
-	@PutMapping("/{estadoId}")
-	public ResponseEntity<Estado> atualizar(@PathVariable Long estadoId, @Valid @RequestBody Estado estado) {
-		Estado estadoDb = estadoRepository.buscar(estadoId);
+	@PutMapping("/{id}")
+	public ResponseEntity<Estado> atualizar(@PathVariable Long id, @Valid @RequestBody Estado estado) {
+		Optional<Estado> estadoDb = estadoRepository.findById(id);
 		
-		if (estadoDb == null) {
+		if(estadoDb.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		BeanUtils.copyProperties(estado, estadoDb, "id");
-		estadoDb = estadoService.salvar(estadoDb);
-		return ResponseEntity.ok(estadoDb);
+		BeanUtils.copyProperties(estado, estadoDb.get(), "id");
+		estado = estadoService.salvar(estadoDb.get());
+		return ResponseEntity.ok(estado);
 		
 	}
 	
